@@ -48,10 +48,10 @@ inquirer.prompt([
 
 ], function(answers){
 
-	var acsApp = new ACSNode(answers.key);
+	var acsApp = new ACSNode(answers.key || program.args[0]);
 	acsApp.usersLogin({
-		login: answers.username,
-		password: answers.password
+		login: answers.username || program.args[1],
+		password: answers.password || program.args[2]
 	}, function(err, result) {
 		if (err) {
 			util.fail("Invalid login. "+err);
