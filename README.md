@@ -79,7 +79,7 @@ In the above example, we would see something like:
 Limited support for basic SQL is supported.  Currently, only for SELECT statements.
 
 ```bash
-$ redmix sql "select name, url from Files where name like 'appc' LIMIT 1 order by url DESC"
+$ redmix sql "select name, url from Files where name like 'appc' order by url DESC LIMIT 1"
 ```
 
 You can delete:

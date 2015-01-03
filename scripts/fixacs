@@ -13,20 +13,25 @@ var fs = require('fs'),
 if (fs.existsSync(fn)) {
 	var mod = require(fn);
 	if (!mod.ACLs.methods.create) {
-		console.log('+ Patched missing ACLs.create method at',fn);
-		mod.ACLs.methods.create = {
-			httpMethod: 'POST',
-			restMethod: 'create'
+		try {
+			console.log('+ Patching missing ACLs.create method at',fn);
+			mod.ACLs.methods.create = {
+				httpMethod: 'POST',
+				restMethod: 'create'
+			}
+			var backup = fn+'.backup';
+			fs.writeFileSync(backup, fs.readFileSync(fn));
+			console.log('+ Backup file at',backup);
+			var output = [
+				'/**',
+				' * Patched ACS configuration file by Redmix to add missing create',
+				' */',
+				'module.exports = ' + JSON.stringify(mod,null,2) + ';'
+			];
+			fs.writeFileSync(fn, output.join('\n'));
 		}
-		var backup = fn+'.backup';
-		fs.writeFileSync(backup, fs.readFileSync(fn));
-		console.log('+ Backup file at',backup);
-		var output = [
-			'/**',
-			' * Patched ACS configuration file by Redmix to add missing create',
-			' */',
-			'module.exports = ' + JSON.stringify(mod,null,2) + ';'
-		];
-		fs.writeFileSync(fn, output.join('\n'));
+		catch (E) {
+			// ignore 
+		}
 	}
 }

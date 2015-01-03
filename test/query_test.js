@@ -61,6 +61,11 @@ describe('query', function(){
 		should(query.where).have.property('foo',{$ne:'bar'});
 	});
 
+	it('should parse assignment with is not foo', function(){
+		var query = parse(['foo is not bar']);
+		should(query.where).have.property('foo',{$ne:'bar'});
+	});
+
 	it('should parse multiple assignments', function(){
 		var query = parse(['foo','bar']);
 		should(query.where).have.property('foo');

@@ -14,6 +14,7 @@ program
 // built-in commands
 	.command('create [options]', 'create a data object')
 	.command('connect <appid> [options]', 'connect to a cloud app')
+	.command('delete <object> <ids>', 'delete one or more data objects')
 	.command('query <object> <query> [options]', 'query objects')
 	.command('sql <query> [options]', 'query objects using SQL')
 	.command('disconnect [options]', 'disconect from a cloud app')
