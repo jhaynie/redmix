@@ -189,7 +189,11 @@ redmix.sql('select * from foo', {}, function(err,executor,query){
 });
 ```
 
-## TODO:
+## Troubleshooting
+
+If you run into an issue, please re-try your request with the `--debug` flag (on command line).  This should print out a little more debugging for things like parsing the SQL, building the ACS request, etc.  If you do run into an issue, please open a [GitHub issues](https://github.com/jhaynie/redmix/issues) or even better, [submit a pull request](https://github.com/jhaynie/redmix/pulls).
+
+## TODO
 
 See the complete issues list in [GitHub issues](https://github.com/jhaynie/redmix/issues).
 
