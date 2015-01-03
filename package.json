@@ -42,7 +42,7 @@
     "inquirer": "^0.8.0",
     "json-2-csv": "^1.0.6",
     "lodash": "^2.4.1",
-    "sqljs": "git://github.com/jhaynie/simpleSqlParser.git#a5d842e7a9e9b047332433272cfb551ab1c10245"
+    "sqljs": "git://github.com/dsferruzza/simpleSqlParser.git#2199defee855f30e3e0a5c01377c8a33a7952154"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
