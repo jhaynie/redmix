@@ -66,19 +66,22 @@ inquirer.prompt([
 			util.fail("Invalid login. "+err);
 		}
 
+		// seems like alias is an internal npm thing, make sure its a string
+		var alias = _.isString(opts.alias) ? opts.alias : null;
+
 		// write the config
-		if (opts.alias) {
+		if (alias) {
 			// make this an alias
 			var aliases = config.aliases || {};
 			// set the alias entry
-			aliases[opts.alias] = {
+			aliases[alias] = {
 				key: key,
 				username: username,
 				session: result.body.meta.session_id,
 			};
 			config.aliases = aliases;
 			if (opts.default || Object.keys(aliases).length===1) {
-				config.alias = opts.alias;
+				config.alias = alias;
 			}
 		}
 		else {
@@ -90,7 +93,7 @@ inquirer.prompt([
 
 		util.saveConfig(config);
 
-		console.log('Application connected.  You can now make requests for this app'+(opts.alias?(' using the alias '+chalk.green(opts.alias)):'.'));
+		console.log('Application connected.  You can now make requests for this app'+(alias?(' using the alias '+chalk.green(alias)):'.'));
 
 		process.exit(0);
 	});
