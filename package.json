@@ -1,6 +1,6 @@
 {
   "name": "redmix",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A fun and friendly Appcelerator Cloud MBaaS command line",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "redmix-create": "./bin/redmix-create",
     "redmix-delete": "./bin/redmix-delete",
     "redmix-disconnect": "./bin/redmix-disconnect",
-    "redmix-query": "./bin/redmix-query"
+    "redmix-query": "./bin/redmix-query",
+    "redmix-sql":"./bin/redmix-sql"
   },
   "repository": {
     "type": "git",
