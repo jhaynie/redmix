@@ -62,23 +62,12 @@ $ redmix query Files "name like appc" --order created_at --limit 1
 Query files with a more complex example:
 
 ```bash
-$ redmix query Files "name!=foo" "module_version not in 0.1.0" "module_version_sortable > 100" --order=-module_version_sortable --sel module_version,name,module_version_sortable --limit 2 --json --query --eval "this.map(function(e){return e.custom_fields.module_version;})"
+$ redmix query Files "name!=foo" "module_version not in 0.1.0" "module_version_sortable > 100" --order=-module_version_sortable --sel module_version,name,module_version_sortable --limit 2 --eval "this.map(function(e){return e.custom_fields.module_version;})"
 ```
 
 In the above example, we would see something like:
 
 ```
-Query: { where:
-   { name: { '$ne': 'foo' },
-     module_version: { '$nin': [ '0.1.0' ] },
-     module_version_sortable: { '$gt': 100 } },
-  limit: '2',
-  order: '-module_version_sortable',
-  sel:
-   { all:
-      [ 'module_version',
-        'name',
-        'module_version_sortable' ] } }
 [
   "1.0.23",
   "1.0.18"
