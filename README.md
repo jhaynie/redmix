@@ -3,6 +3,9 @@
 A fun and friendly Appcelerator Cloud MBaaS command line.
 
 
+![demo](http://jhaynie.github.io/redmix/demo.gif)
+
+
 ## Installation
 
 ```bash
@@ -10,6 +13,7 @@ $ [sudo] npm install redmix -g
 ```
 
 ## Usage
+
 
 ### Get all the available commands and options:
 
