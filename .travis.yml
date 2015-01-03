@@ -8,7 +8,7 @@ before_script:
 - ./bin/redmix connect $REDMIX_KEY $REDMIX_USERNAME $REDMIX_PASSWORD --no-banner
 after_script:
 - ./bin/redmix disconnect
-- rm -rf ~/.redmix.json
+- rm -rf ~/.redmix.json --no-banner
 after_install:
 - sudo npm link
 env:
