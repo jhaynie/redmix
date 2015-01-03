@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+/**
+ * in the version of the node ACS library we're using we have a bug (already reported)
+ * which omits the create from ACLs.  We patch that here if the bug still exists.  This
+ * patch file can be removed once this is fixed.
+ */
+
+var fs = require('fs'),
+	path = require('path'),
+	fn = path.join(__dirname,'..','node_modules','acs-node','lib','acsObjects','acls.js');
+
+if (fs.existsSync(fn)) {
+	var mod = require(fn);
+	if (!mod.ACLs.methods.create) {
+		console.log('+ Patched missing ACLs.create method at',fn);
+		mod.ACLs.methods.create = {
+			httpMethod: 'POST',
+			restMethod: 'create'
+		}
+		var backup = fn+'.backup';
+		fs.writeFileSync(backup, fs.readFileSync(fn));
+		console.log('+ Backup file at',backup);
+		var output = [
+			'/**',
+			' * Patched ACS configuration file by Redmix to add missing create',
+			' */',
+			'module.exports = ' + JSON.stringify(mod,null,2) + ';'
+		];
+		fs.writeFileSync(fn, output.join('\n'));
+	}
+}

@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	util = require('../lib/util'),
+	factory = require('../lib/factory');
+
+program.description('sql like query for ACS')
+	.usage('<query> [options]')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+	.option('-e, --eval <code>', 'eval JS on the result')
+	.option('-q, --query', 'show query')
+	.option('-m, --meta', 'show metadata in results')
+	.option('-a, --ast', 'print out SQL ast (for debugging)')
+	.option('-o, --output <format>', 'print output in one of the formats: '+util.getOutputFormats())
+;
+// process the arguments
+program.parse(process.argv);
+
+if (program.args.length < 1) {
+	program.help();
+}
+
+util.setupColors(program.opts());
+
+factory.sqlCreator(program.args[0], program.opts(), function(err,executor,query){
+	if (err) {
+		util.fail(err);
+	}
+	executor(query);
+});

@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+
+var chalk = require('chalk'),
+	path = require('path'),
+	program = require('commander'),
+	pkg = require('../package.json'),
+	util = require('../lib/util');
+
+program
+	.usage('cmd [options]')
+	.version(pkg.version)
+	.option('--no-banner', 'Suppress the banner')
+	.option('--no-colors', 'turn of colors in output')
+// built-in commands
+	.command('create [options]', 'create a data object')
+	.command('connect <appid> [options]', 'connect to a cloud app')
+	.command('query <object> <query> [options]', 'query objects')
+	.command('sql <query> [options]', 'query objects using SQL')
+	.command('disconnect [options]', 'disconect from a cloud app')
+;
+
+// make sure we reference the appc binary
+var bin = process.argv[1];
+if (path.basename(bin) !== 'redmix') {
+	process.argv[1] = path.join(path.dirname(bin), 'redmix');
+}
+
+// clear the terminal in case we piped with a spinner running
+if (process.stdout.isTTY) {
+	process.stdout.write('\u001b[2K');
+}
+
+/**
+ * monkey patch sub-command handling to propogate the exit
+ * code from the sub-command to this process so that we get
+ * the correct exit codes.  also make sure to pass along
+ * --no-colors
+ */
+var executeSubCommand = program.executeSubCommand;
+program.executeSubCommand = function(argv, args, unknown) {
+	if (!program.colors) {
+		unknown.push('--no-colors');
+	}
+	executeSubCommand.call(this,argv,args,unknown);
+	this.runningCommand.on('close',function(exitCode){
+		process.exit(exitCode);
+	});
+};
+
+// process the arguments
+program.parse(process.argv);
+
+// banner
+if (program.banner) {
+	util.setupColors(program.opts());
+	console.log(chalk.red('🍷  Redmix') + chalk.blue.bold('  « A fun and friendly Appcelerator Cloud MBaaS command line »') + chalk.grey(' v'+pkg.version));
+	console.log(chalk.grey('Copyright (c) 2015 by Jeff Haynie.  All Rights Reserved.'));
+	console.log('');
+}
+
+if (!program.args.length) {
+	program.help();
+}

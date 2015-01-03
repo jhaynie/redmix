@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	util = require('../lib/util');
+
+program.description('disconnect from ACS')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+;
+
+// process the arguments
+program.parse(process.argv);
+
+util.setupColors(program.opts());
+
+// delete the configuration
+var config = util.getConfig();
+delete config.key;
+delete config.username;
+delete config.password;
+delete config.session;
+util.saveConfig(config);
+
+process.exit(0);

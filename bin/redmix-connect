@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	inquirer = require('inquirer'),
+	ACSNode = require('acs-node'),
+	util = require('../lib/util'),
+	_ = require('lodash'),
+	config = util.getConfig();
+
+program.description('connect to ACS')
+	.usage('<appid> <username> <password>')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+;
+
+// process the arguments
+program.parse(process.argv);
+
+util.setupColors(program.opts());
+
+var defaults = _.merge(config, program.opts());
+
+inquirer.prompt([
+	
+	{
+		type: 'input',
+		name: 'key',
+		message: 'API Key',
+		when: function() { return program.args.length < 1; },
+		default: defaults && defaults.key
+	},
+
+	{
+		type: 'username',
+		name: 'username',
+		message: 'Username/Email',
+		when: function() { return program.args.length < 2; },
+		default: defaults && defaults.username
+	},
+
+	{
+		type: 'password',
+		name: 'password',
+		message: 'Password',
+		when: function() { return program.args.length < 3; },
+		default: defaults && defaults.password
+	},
+
+], function(answers){
+
+	var acsApp = new ACSNode(answers.key);
+	acsApp.usersLogin({
+		login: answers.username,
+		password: answers.password
+	}, function(err, result) {
+		if (err) {
+			util.fail("Invalid login. "+err);
+		}
+
+		// write the config
+		config.key = answers.key;
+		config.username = answers.username;
+		config.session = result.body.meta.session_id;
+		util.saveConfig(config);
+
+		console.log('Application connected.  You can now make requests for this app.');
+		process.exit(0);
+	});
+
+});

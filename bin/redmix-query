@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	util = require('../lib/util'),
+	factory = require('../lib/factory');
+
+program.description('query ACS')
+	.usage('<object> <params> [options]')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+	.option('--limit <size>', 'limit the size of results')
+	.option('--skip <num>', 'number of records to skip')
+	.option('--order <order>','the order of the query')
+	.option('--sel <fields>',' which fields to return from the query')
+	.option('--unsel <fields>','which fields to not return from the query')
+	.option('-e, --eval <code>', 'eval JS on the result')
+	.option('-q, --query', 'show query')
+	.option('-m, --meta', 'show metadata in results')
+	.option('-o, --output <format>', 'print output in one of the formats: '+util.getOutputFormats())
+;
+
+// process the arguments
+program.parse(process.argv);
+
+if (program.args.length < 2) {
+	program.help();
+}
+
+util.setupColors(program.opts());
+
+factory.queryCreator(program.args[0], program.args.slice(1), program.opts(), function(err,executor,query){
+	if (err) {
+		util.fail(err);
+	}
+	executor(query);
+});

@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	util = require('../lib/util'),
+	factory = require('../lib/factory');
+
+program.description('create a data object')
+	.usage('<object> <values>')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+	.option('--tags <tags>', 'Comma-separated list of tags associated with this object')
+	.option('--acl <acl_name>', 'Name of an ACLs to associate with this object')
+	.option('--acl_id <acl_id>', 'ID of an ACLs to associate with this object')
+	.option('--user_id <user_id>', 'User ID to create the object on behalf of')
+	.option('-e, --eval <code>', 'eval JS on the result')
+	.option('-q, --query', 'show query')
+	.option('-m, --meta', 'show metadata in results')
+	.option('-o, --output <format>', 'print output in one of the formats: '+util.getOutputFormats())
+;
+
+// process the arguments
+program.parse(process.argv);
+
+if (program.args.length!=2) {
+	program.help();
+}
+
+util.setupColors(program.opts());
+
+var classname = program.args[0],
+	params = program.args[1];
+
+factory.createCreator(classname, params, program.opts(), function(err,executor,value){
+	if (err) {
+		util.fail(err);
+	}
+	executor(value);
+});

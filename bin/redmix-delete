@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+	util = require('../lib/util'),
+	factory = require('../lib/factory');
+
+program.description('delete one or more data objects')
+	.usage('<object> <ids>')
+	.option('--debug', 'extra debug logging')
+	.option('--no-colors', 'turn of colors in output')
+	.option('-q, --query', 'show query')
+	.option('-m, --meta', 'show metadata in results')
+	.option('--no-prompt', "don't prompt, just do it")
+;
+
+// process the arguments
+program.parse(process.argv);
+
+if (program.args.length<2) {
+	program.help();
+}
+
+util.setupColors(program.opts());
+
+var classname = program.args[0],
+	params = program.args.slice(1).join(',');
+
+factory.deleteCreator(classname, params, program.opts(), function(err,executor,value){
+	if (err) {
+		util.fail(err);
+	}
+	executor(value, function(err,body,meta,result){
+		console.log('result=>',meta,body);
+		if (err) {
+			if (err.statusCode===400 && /invalid object id/.test(err.reason)) {
+				util.fail(err.reason);
+			}
+			util.fail(err);
+		}
+		if (meta && meta.status==='ok') {
+			console.log('Deleted!');
+		}
+	});
+});
