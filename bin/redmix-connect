@@ -48,18 +48,22 @@ inquirer.prompt([
 
 ], function(answers){
 
-	var acsApp = new ACSNode(answers.key || program.args[0]);
+	var key = answers.key || program.args[0],
+		username = answers.username || program.args[1],
+		password = answers.password || program.args[2];
+
+	var acsApp = new ACSNode(key);
 	acsApp.usersLogin({
-		login: answers.username || program.args[1],
-		password: answers.password || program.args[2]
+		login: username,
+		password: password
 	}, function(err, result) {
 		if (err) {
 			util.fail("Invalid login. "+err);
 		}
 
 		// write the config
-		config.key = answers.key;
-		config.username = answers.username;
+		config.key = key;
+		config.username = username;
 		config.session = result.body.meta.session_id;
 		util.saveConfig(config);
 
