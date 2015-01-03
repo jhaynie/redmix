@@ -1,7 +1,7 @@
 {
   "name": "redmix",
   "version": "0.0.1",
-  "description": "CLI for Appcelerator Cloud",
+  "description": "A fun and friendly Appcelerator Cloud MBaaS command line",
   "main": "index.js",
   "scripts": {
     "test": "grunt",

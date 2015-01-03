@@ -28,7 +28,7 @@ if (program.args.length < 2) {
 
 util.setupColors(program.opts());
 
-factory.queryCreator(program.args[0], program.args.slice(1), program.opts(), function(err,executor,query){
+factory.query(program.args[0], program.args.slice(1), program.opts(), function(err,executor,query){
 	if (err) {
 		util.fail(err);
 	}

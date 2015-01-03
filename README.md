@@ -145,11 +145,31 @@ SIZE      MODULE_NAME
 6090      appc.acs
 ```
 
+
+## Using as an API
+
+You can use Redmix as a node library as well.
+
+For example, to execute a query you can do something like this:
+
+```javascript
+var redmix = require('redmix');
+redmix.sql('select * from foo', {}, function(err,executor,query){
+  if (err) {
+    console.log('failed:',err);
+  }
+  else {
+    executor(query);
+  }
+});
+```
+
+
 ## TODO:
 
 - Update
 - Download Photo
-- SQL update, describe
+- SQL update, describe, create
 
 
 ## License

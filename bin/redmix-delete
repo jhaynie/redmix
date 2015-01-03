@@ -25,7 +25,7 @@ util.setupColors(program.opts());
 var classname = program.args[0],
 	params = program.args.slice(1).join(',');
 
-factory.deleteCreator(classname, params, program.opts(), function(err,executor,value){
+factory.delete(classname, params, program.opts(), function(err,executor,value){
 	if (err) {
 		util.fail(err);
 	}

@@ -1,6 +1,9 @@
 var should = require('should'),
 	path = require('path'),
-	factory = require('../lib/factory');
+	factory = require('../lib/factory'),
+	create = factory.create,
+	query = factory.query,
+	sql = factory.sql;
 	
 
 describe('factory', function(){
@@ -9,7 +12,7 @@ describe('factory', function(){
 
 		describe('files', function(){
 			it('should create', function(done) {
-				factory.createCreator('files','name=Jeff,user=1,file=./package.json',null,function(err,executor,object){
+				create('files','name=Jeff,user=1,file=./package.json',null,function(err,executor,object){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(object).be.an.Object;
@@ -21,14 +24,14 @@ describe('factory', function(){
 				});
 			});
 			it('should raise exception if missing required field', function(done) {
-				factory.createCreator('files','foobar=1',null,function(err,executor,object){
+				create('files','foobar=1',null,function(err,executor,object){
 					should(err).be.an.object;
 					should(err.message).equal("required attribute 'name' missing. 'name' is File name");
 					done();
 				});
 			});
 			it('should not raise exception if using a custom object', function(done) {
-				factory.createCreator('files','name=Jeff,file=./package.json,foobar=1',null,function(err,executor,object){
+				create('files','name=Jeff,file=./package.json,foobar=1',null,function(err,executor,object){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(object).be.an.Object;
@@ -42,7 +45,7 @@ describe('factory', function(){
 
 		describe('keyvalues', function(){
 			it('should create', function(done) {
-				factory.createCreator('keyvalues','name=Jeff,value=Haynie',null,function(err,executor,object){
+				create('keyvalues','name=Jeff,value=Haynie',null,function(err,executor,object){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(object).be.an.Object;
@@ -53,14 +56,14 @@ describe('factory', function(){
 				});
 			});
 			it('should raise exception if missing required field', function(done) {
-				factory.createCreator('keyvalues','foobar=1',null,function(err,executor,object){
+				create('keyvalues','foobar=1',null,function(err,executor,object){
 					should(err).be.an.object;
 					should(err.message).equal("required attribute 'name' missing. 'name' is Name (or key) for this key-value pair");
 					done();
 				});
 			});
 			it('should raise exception if using a custom object', function(done) {
-				factory.createCreator('keyvalues','name=Jeff,value=Haynie,foobar=1',null,function(err,executor,object){
+				create('keyvalues','name=Jeff,value=Haynie,foobar=1',null,function(err,executor,object){
 					should(err).be.an.object;
 					should(err.message).equal("keyValues doesn't support custom fields");
 					done();
@@ -70,7 +73,7 @@ describe('factory', function(){
 
 		describe('acls', function(){
 			it('should create', function(done) {
-				factory.createCreator('ACLs','name=Jeff',null,function(err,executor,object){
+				create('ACLs','name=Jeff',null,function(err,executor,object){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(object).be.an.Object;
@@ -87,7 +90,7 @@ describe('factory', function(){
 
 		describe('files', function(){
 			it('should find files', function(done) {
-				factory.queryCreator('files','a',null,function(err,executor,query){
+				query('files','a',null,function(err,executor,query){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(query).be.an.Object;
@@ -96,7 +99,7 @@ describe('factory', function(){
 				});
 			});
 			it('should find Files', function(done) {
-				factory.queryCreator('Files','a',null,function(err,executor,query){
+				query('Files','a',null,function(err,executor,query){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(query).be.an.Object;
@@ -105,7 +108,7 @@ describe('factory', function(){
 				});
 			});
 			it('should find File', function(done) {
-				factory.queryCreator('File','a',null,function(err,executor,query){
+				query('File','a',null,function(err,executor,query){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(query).be.an.Object;
@@ -117,7 +120,7 @@ describe('factory', function(){
 
 		describe('custom object', function(){
 			it('should be created if not found', function(done) {
-				factory.queryCreator('foobar','a',null,function(err,executor,query){
+				query('foobar','a',null,function(err,executor,query){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(query).be.an.Object;
@@ -130,7 +133,7 @@ describe('factory', function(){
 
 		describe('sql', function(){
 			it('should be created if not found', function(done) {
-				factory.sqlCreator('select name from files',null,function(err,executor,query){
+				sql('select name from files',null,function(err,executor,query){
 					if (err) { return done(err); }
 					should(executor).be.a.Function;
 					should(query).be.an.Object;

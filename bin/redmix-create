@@ -30,7 +30,7 @@ util.setupColors(program.opts());
 var classname = program.args[0],
 	params = program.args[1];
 
-factory.createCreator(classname, params, program.opts(), function(err,executor,value){
+factory.create(classname, params, program.opts(), function(err,executor,value){
 	if (err) {
 		util.fail(err);
 	}

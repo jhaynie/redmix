@@ -23,7 +23,7 @@ if (program.args.length < 1) {
 
 util.setupColors(program.opts());
 
-factory.sqlCreator(program.args[0], program.opts(), function(err,executor,query){
+factory.sql(program.args[0], program.opts(), function(err,executor,query){
 	if (err) {
 		util.fail(err);
 	}
