@@ -42,7 +42,7 @@
     "inquirer": "^0.8.0",
     "json-2-csv": "^1.0.6",
     "lodash": "^2.4.1",
-    "sqljs": "git://github.com/dsferruzza/simpleSqlParser.git#060f88e"
+    "sqljs": "git://github.com/jhaynie/simpleSqlParser.git#a5d842e7a9e9b047332433272cfb551ab1c10245"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -53,5 +53,5 @@
     "grunt-mocha-test": "^0.12.1",
     "should": "^4.0.4"
   },
-  "bundledDependencies": ["sqljs","acs-node-sdk"]
+  "bundledDependencies": ["acs-node-sdk"]
 }
