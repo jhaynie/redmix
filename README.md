@@ -1,4 +1,4 @@
-# Redmix [![Build Status](https://travis-ci.org/jhaynie/redmix.svg)](https://travis-ci.org/jhaynie/redmix) [![npm version](https://badge.fury.io/js/redmix@2x.png)](http://badge.fury.io/js/redmix)
+# Redmix [![Build Status](https://travis-ci.org/jhaynie/redmix.svg)](https://travis-ci.org/jhaynie/redmix) [![npm version](https://badge.fury.io/js/redmix.png)](http://badge.fury.io/js/redmix)
 
 A fun and friendly Appcelerator Cloud MBaaS command line.
 
