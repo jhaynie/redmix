@@ -5,9 +5,9 @@ node_js:
 - '0.10'
 before_script:
 - npm install -g grunt-cli
+- ./bin/redmix connect $REDMIX_KEY $REDMIX_USERNAME $REDMIX_PASSWORD
 after_install:
 - sudo npm link
-- ./bin/redmix connect $REDMIX_KEY $REDMIX_USERNAME $REDMIX_PASSWORD
 env:
   global:
   - secure: QHaKBDVtYLmUKIFtmL2GgqZkCKAIiAxfC/APel0dk42iQWf95TgaT5ZG9j4vwXixs/F2ZTFh/b0+oKlDJ+U+SHh1ntPIDvPOdpesWYO05kWECEj9LDKQzalPb+bgyPxGsBq33BDkWiE22Ve/DfFywCyKeLbcQeGTc/gTNDzEdPo=
