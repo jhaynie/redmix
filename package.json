@@ -1,6 +1,6 @@
 {
   "name": "redmix",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A fun and friendly Appcelerator Cloud MBaaS command line",
   "main": "index.js",
   "scripts": {

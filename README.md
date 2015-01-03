@@ -55,6 +55,27 @@ $ redmix connect
 Application connected.  You can now make requests for this app.
 ```
 
+You can also connect to multiple ACS apps at the same time.  To use multiple connections, use the `--alias` flag when you connect.
+
+The alias should be set to a name that you will later reference on other calls to Redmix using the same flag.
+
+For example, let's say you have 2 different apps:
+
+```bash
+$ redmix connect 12345 myusername mypass --alias acs1
+$ redmix connect 56789 myotheruser mypass --alias acs2 --default
+```
+
+You can use the `--default` option to indicate the if no default is specified on the command line, to use that specific connection.
+
+Now you can switch easily between different connections:
+
+```bash
+$ redmix sql "select * from files" --alias acs1
+$ redmix sql "select * from files" --alias acs2
+```
+
+
 ### Query an Object
 
 Query files which have a name starting with appc and return the oldest one:
@@ -168,13 +189,9 @@ redmix.sql('select * from foo', {}, function(err,executor,query){
 });
 ```
 
-
 ## TODO:
 
-- Update
-- Download Photo
-- SQL update, describe, create
-
+See the complete issues list in [GitHub issues](https://github.com/jhaynie/redmix/issues).
 
 ## License
 

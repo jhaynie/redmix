@@ -2,6 +2,7 @@
 
 var program = require('commander'),
 	inquirer = require('inquirer'),
+	chalk = require('chalk'),
 	ACSNode = require('acs-node'),
 	util = require('../lib/util'),
 	_ = require('lodash'),
@@ -11,14 +12,18 @@ program.description('connect to ACS')
 	.usage('<appid> <username> <password>')
 	.option('--debug', 'extra debug logging')
 	.option('--no-colors', 'turn of colors in output')
+	.option('--default', 'make this the default connection')
+	.option('--alias <name>', 'assign an alias name to this connection')
 ;
 
 // process the arguments
 program.parse(process.argv);
 
-util.setupColors(program.opts());
+var opts = program.opts(),
+	baseconfig = _.merge({}, config),
+	defaults = _.merge(baseconfig, opts);
 
-var defaults = _.merge(config, program.opts());
+util.setupColors(opts);
 
 inquirer.prompt([
 	
@@ -62,12 +67,31 @@ inquirer.prompt([
 		}
 
 		// write the config
-		config.key = key;
-		config.username = username;
-		config.session = result.body.meta.session_id;
+		if (opts.alias) {
+			// make this an alias
+			var aliases = config.aliases || {};
+			// set the alias entry
+			aliases[opts.alias] = {
+				key: key,
+				username: username,
+				session: result.body.meta.session_id,
+			};
+			config.aliases = aliases;
+			if (opts.default || Object.keys(aliases).length===1) {
+				config.alias = opts.alias;
+			}
+		}
+		else {
+			// just set it
+			config.key = key;
+			config.username = username;
+			config.session = result.body.meta.session_id;
+		}
+
 		util.saveConfig(config);
 
-		console.log('Application connected.  You can now make requests for this app.');
+		console.log('Application connected.  You can now make requests for this app'+(opts.alias?(' using the alias '+chalk.green(opts.alias)):'.'));
+
 		process.exit(0);
 	});
 

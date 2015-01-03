@@ -1,24 +1,51 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-	util = require('../lib/util');
+	util = require('../lib/util'),
+	chalk = require('chalk');
 
 program.description('disconnect from ACS')
 	.option('--debug', 'extra debug logging')
 	.option('--no-colors', 'turn of colors in output')
+	.option('--alias <name>', 'alias connection to use when multiple ACS connections')
 ;
 
 // process the arguments
 program.parse(process.argv);
 
+var config = util.getConfig(),
+	opts = program.opts();
+
 util.setupColors(program.opts());
 
-// delete the configuration
-var config = util.getConfig();
-delete config.key;
-delete config.username;
-delete config.password;
-delete config.session;
+if (opts.alias) {
+	if (config.aliases && opts.alias in config.aliases) {
+		delete config.aliases[opts.alias];
+	}
+	var keys = Object.keys(config.aliases);
+	// if this was the default, set a new one
+	if (opts.alias===config.alias) {
+		if (keys.length) {
+			// pick the first one
+			config.alias = keys[0];
+			if (keys.length > 1) {
+				// warn if we have more than one so that the user knows we picked a new one
+				console.log('Connection deleted for '+chalk.yellow(opts.alias)+', set new default to '+chalk.yellow(keys[0]));
+			}
+		}
+	}
+	console.log('Connection deleted for '+chalk.yellow(opts.alias)+'. '+keys.length+' connections remaining...');
+}
+else {
+	delete config.key;
+	delete config.username;
+	delete config.password;
+	delete config.session;
+	delete config.alias;
+	delete config.aliases;
+	console.log('Connection removed. You are logged out of ACS.');
+}
+
 util.saveConfig(config);
 
 process.exit(0);

@@ -17,6 +17,7 @@ program.description('query ACS')
 	.option('-q, --query', 'show query')
 	.option('-m, --meta', 'show metadata in results')
 	.option('-o, --output <format>', 'print output in one of the formats: '+util.getOutputFormats())
+	.option('--alias <name>', 'alias connection to use when multiple ACS connections')
 ;
 
 // process the arguments
