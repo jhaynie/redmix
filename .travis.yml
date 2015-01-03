@@ -6,6 +6,8 @@ node_js:
 before_script:
 - npm install -g grunt-cli
 - ./bin/redmix connect $REDMIX_KEY $REDMIX_USERNAME $REDMIX_PASSWORD --no-banner
+- cat ~/.redmix.json
+- echo "^^^^^^^^"
 after_install:
 - sudo npm link
 env:
