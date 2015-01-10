@@ -24,9 +24,8 @@ if (program.args.length<2) {
 util.setupColors(program.opts());
 
 var classname = program.args[0],
-	params = program.args.slice(1).join(',');
+	params = program.args[1]==='*' ? null : program.args.slice(1).join(',');
 
-console.log('here',classname,params);
 factory.delete(classname, params, program.opts(), function(err,executor,value){
 	if (err) {
 		util.fail(err);
